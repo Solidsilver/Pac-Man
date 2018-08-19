@@ -53,8 +53,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Intro.cs" />
      <Compile Include="Assets\Scripts\BlinkyAI.cs" />
+     <Compile Include="Assets\Scripts\bTileControll.cs" />
+     <Compile Include="Assets\Scripts\cTileControll.cs" />
+     <Compile Include="Assets\Scripts\iTileControll.cs" />
      <Compile Include="Assets\Scripts\pmMovement.cs" />
+     <Compile Include="Assets\Scripts\pTileControll.cs" />
      <None Include="Assets\Pixel Font - Tripfive\_README.txt" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>C:/Users/Luke/Documents/Pac Man/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>

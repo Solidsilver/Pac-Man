@@ -56,3 +56,6 @@ TagManager:
   - name: Sprites
     uniqueID: 1799995185
     locked: 0
+  - name: TargetTiles
+    uniqueID: 3946431639
+    locked: 0
