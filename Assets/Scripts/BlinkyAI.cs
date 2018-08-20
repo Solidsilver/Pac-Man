@@ -10,23 +10,32 @@ public class BlinkyAI : MonoBehaviour {
     private BoxCollider2D[] dirs;
     public GameObject map;
     public GameObject TargetTile;
+    public GameObject pm;
+    public GameObject home;
+    public Animator am;
     public float dRight, dUp, dLeft, dDown;
-    public bool up, down, right, left, canChangeDir;
+    public bool up, down, right, left, canChangeDir, paused;
+    public int startDir;
+
+    private const float spDefault = 400, spSlow = 300, spFast = 700;
 
 
     private void Awake()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         dirs = GetComponents<BoxCollider2D>();
+        am = GetComponent<Animator>();
         hMove = 0;
         vMove = 0;
         dir = 2;
-        speed = 400f;
+        speed = spDefault;
         up = false;
         down = true;
         right = false;
         left = true;
         canChangeDir = false;
+        paused = false;
+        am.SetInteger("dir", startDir);
     }
 
     // Use this for initialization
@@ -102,6 +111,7 @@ public class BlinkyAI : MonoBehaviour {
         this.up = dirFree(1);
         this.left = dirFree(2);
         this.down = dirFree(3);
+        am.SetInteger("dir", ret);
         return ret;
     }
 
@@ -125,10 +135,33 @@ public class BlinkyAI : MonoBehaviour {
         }
         return false;
     }
+
+    public void setMode(int mode)
+    {
+        am.SetInteger("mode", mode);
+    }
 	
 	// Update is called once per frame
 	void Update () {
+        if (paused)
+            return;
 
+            //am.SetInteger("mode", GameObject.Find("Timer").GetComponent<Intro>().ghostMode);
+        if (am.GetInteger("mode") == 3 && (dirs[0].IsTouching(home.GetComponent<BoxCollider2D>()))) {
+            am.SetInteger("mode", 0);
+            speed = spDefault;
+        }
+        if (dirs[0].IsTouching(pm.GetComponent<CircleCollider2D>()))
+        {
+            if (am.GetInteger("mode") < 2) 
+                pm.GetComponent<pmMovement>().killed();
+            if (am.GetInteger("mode") == 2)
+            {
+                am.SetInteger("mode", 3);
+                pm.GetComponent<pmMovement>().score += 200;
+                speed = spFast;
+            }
+        }
         if (isJunction())
         {
             transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y));
@@ -171,6 +204,8 @@ public class BlinkyAI : MonoBehaviour {
     // Called at at a fixed time interval
     void FixedUpdate()
     {
+        if (paused)
+            return;
         m_Rigidbody2D.velocity = new Vector2(hMove * speed * Time.fixedDeltaTime, vMove * speed * Time.fixedDeltaTime);
 
         if (transform.position.x >= 29.5f)

@@ -7,6 +7,7 @@ public class cTileControll : MonoBehaviour {
     public int mode;
     public GameObject pm;
     public GameObject clyde;
+    public GameObject setup;
     // Use this for initialization
     void Start() {
 
@@ -20,7 +21,7 @@ public class cTileControll : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (mode == 0)
+        if (setup.GetComponent<Intro>().ghostMode == 0)
         {
             if (distToPac() > 16)
             {
@@ -31,9 +32,13 @@ public class cTileControll : MonoBehaviour {
                 transform.position = new Vector3(-27, -31);
             }
         }
-        else
+        else if (setup.GetComponent<Intro>().ghostMode == 1 && setup.GetComponent<Intro>().ghostMode == 2)
         {
             transform.position = new Vector3(-27, -31);
+        }
+        if (GameObject.Find("Clyde").GetComponent<Animator>().GetInteger("mode") == 3)
+        {
+            transform.position = new Vector3(0, 9, transform.position.z);
         }
     }
 }

@@ -6,6 +6,7 @@ public class pTileControll : MonoBehaviour {
     //Chase: 0, Scatter: 1, Frightened: 2
     public int mode;
     public GameObject pm;
+    public GameObject setup;
 
     // Use this for initialization
     void Start () {
@@ -14,7 +15,7 @@ public class pTileControll : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (mode == 0)
+        if (setup.GetComponent<Intro>().ghostMode == 0)
         {
             //transform.position = new Vector3(pm.transform.position.x, pm.transform.position.y, transform.position.z);
             switch(pm.GetComponent<pmMovement>().direction)
@@ -35,9 +36,13 @@ public class pTileControll : MonoBehaviour {
                     break;
             }
         }
-        else
+        else if (setup.GetComponent<Intro>().ghostMode == 1 && setup.GetComponent<Intro>().ghostMode == 2)
         {
             transform.position = new Vector3(-23, 39);
+        }
+        if (GameObject.Find("Pinky").GetComponent<Animator>().GetInteger("mode") == 3)
+        {
+            transform.position = new Vector3(0, 9, transform.position.z);
         }
     }
 }
